@@ -1,0 +1,33 @@
+# === Machine Learning & Data Assets ===
+# Never commit heavy binary models or raw data matrices
+data/
+models/
+*.pkl
+*.csv
+*.h5
+*.npy
+*.npz
+
+# === Python Environment ===
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+ENV/
+.env
+
+# === Node.js & Dependency Ecosystem ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# === Operating System Trash ===
+.DS_Store
+.DS_Store?
+Thumbs.db
+ehthumbs.db
+.Spotlight-V100
+.Trashes
