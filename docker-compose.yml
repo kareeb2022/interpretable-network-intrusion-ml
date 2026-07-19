@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  telemetry-db:
+    image: postgres:15-alpine
+    container_name: telemetry_database
+    environment:
+      POSTGRES_USER: telemetry_admin
+      POSTGRES_PASSWORD: SecretPassword123
+      POSTGRES_DB: telemetry_logs
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  telemetry-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    image: telemetry-api:production
+    container_name: telemetry_api_gateway
+    ports:
+      - "8080:3000"
+    volumes:
+      - ./models:/workspace/models
+      - ./src:/workspace/src
+    restart: on-failure
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=telemetry-db
+      - DB_USER=telemetry-admin
+      - DB_PASSWORD=SecretPassword123
+      - DB_NAME=telemetry_logs
+    depends_on:
+      - telemetry-db
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (r) => { if (r.statusCode === 200) process.exit(0); else process.exit(1); })"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+volumes:
+  postgres_data:

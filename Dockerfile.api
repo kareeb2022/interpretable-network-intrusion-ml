@@ -1,0 +1,20 @@
+FROM node:20-alpine
+
+# Install python and science packages required to run scikit-learn metrics inside Alpine environment
+RUN apk add --no-cache python3 py3-pip python3-dev g++ gcc musl-dev libffi-dev
+
+# Set up global python packages to align with our training parameters
+RUN python3 -m venv /usr/workspace/venv
+ENV PATH="/usr/workspace/venv/bin:$PATH"
+RUN pip install --no-cache-dir pandas scikit-learn numpy joblib
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install --omit=dev
+
+COPY . .
+
+EXPOSE 3000
+
+CMD [ "npm", "start" ]
