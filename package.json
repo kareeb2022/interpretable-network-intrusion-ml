@@ -1,0 +1,12 @@
+{
+  "name": "telemetry-alert-api",
+  "version": "1.0.0",
+  "description": "Production Node server for hosting IoT maintenance alerts.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
